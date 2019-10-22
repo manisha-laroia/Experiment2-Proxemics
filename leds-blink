@@ -1,0 +1,93 @@
+/*
+ * Creation & Computation - Digital Futures, OCAD University
+ * Kate Hartman / Nick Puckett (Reference- servoOscillate1.ino)
+ *
+ * https://github.com/DigitalFuturesOCADU/CC19/blob/master/Experiment2/output/BlinkLED_withTimer_distance/BlinkLED_withTimer_distance.ino
+ *  
+ */
+ 
+int ledPin1 = 9;   //define the pins that the LEDs will be attached to
+int ledPin2 = 5;
+
+
+int blinkRates1 = 2000; //define the blinking Rates - state 1
+int blinkRates2 = 1000; //define the blinking Rates - state 2
+int blinkRates3 = 100; //define the blinking Rates - state 3
+
+boolean ledState1 = false;    //store the current state of each led.  false = off
+boolean ledState2 = false;    //store the current state of each led.  false = off
+
+long lastTimeYouBlinked1;     //variables for holding the time value of when each LED last changed
+long lastTimeYouBlinked2;     //variables for holding the time value of when each LED last changed
+
+int distanceMM;
+int pinNumber = 12;
+
+
+void setup() {
+  // put your setup code here, to run once:
+
+  pinMode(ledPin1, OUTPUT);  //set all of the pins to output
+  pinMode(ledPin2, OUTPUT);
+  Serial.begin(9600); //turn on the Serial port so we can print values
+  delay(4000);
+}
+
+void loop() {
+
+  distanceMM = pulseIn(pinNumber, HIGH);//read the value from the sensor
+  //  Serial.print(“Distance to object in MM: “);//print the value to the console
+  Serial.println(distanceMM);
+
+
+   if (distanceMM < 1000) {
+    red();
+  }
+  
+  if (distanceMM > 3000) {
+    yellow();
+
+  }
+
+  if (distanceMM < 3000 && distanceMM > 1000) {
+    yellowblink();
+  }
+
+}
+///////////states//////////
+
+void yellow() {
+  ///LED1                        //the same timer functions we used before, just multiplied
+  if (millis() - lastTimeYouBlinked1 >= blinkRates1)
+  {
+    ledState1 = !ledState1;     //the toggle function. only on boolean variables says to be the opposite of your current state
+    lastTimeYouBlinked1 = millis();
+  }
+
+  digitalWrite(ledPin1, ledState1); //write the value to each PIN
+
+}
+
+void yellowblink() {
+
+  ///LED1                                           //the same timer functions we used before, just multiplied
+  if (millis() - lastTimeYouBlinked1 >= blinkRates2)
+  {
+    ledState1 = !ledState1;     //the toggle function. only on boolean variables says to be the opposite of your current state
+    lastTimeYouBlinked1 = millis();
+  }
+
+  digitalWrite(ledPin1, ledState1); //write the value to each PIN
+}
+
+void red() {
+
+  ////LED2
+  if (millis() - lastTimeYouBlinked2 >= blinkRates3)
+  {
+    ledState2 = !ledState2;
+    lastTimeYouBlinked2 = millis();
+  }
+ 
+  digitalWrite(ledPin2, ledState2); //write the value to each PIN
+ }
