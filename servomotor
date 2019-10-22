@@ -1,0 +1,77 @@
+/*
+ * Creation & Computation - Digital Futures, OCAD University
+ * Kate Hartman / Nick Puckett (Reference- servoOscillate1.ino)
+ *
+ * Nick Puckett animation tools library 
+ * https://github.com/npuckett/arduinoAnimation/blob/master/animationTools/animationTools.h
+ * 
+ * Multi Servo Sweep
+ * Based on basic Sweep example, but updated to use a timer 
+ * 
+ */
+
+#include <animationTools.h>
+#include <Servo.h>
+
+int servoRotaion;
+Servo s1;
+int s1Pin = 10;
+float speedValue;
+int pinNumber = 2; //the pin the pulsewidth is read on
+int distance1;
+
+int moveRate;        //the time between updates in milliseconds
+int minAngle = 0;     //sets the low point of the movement range
+int maxAngle;   //sets the high point of the movement range
+int moveIncrement = 1;    // how much to move the motor each cycle 
+int servoAngle1;
+long lastTimeYouMoved1;
+
+Servo servo1;  // create the Servo object
+
+void setup() {
+  // put your setup code here, to run once:
+  s1.attach(s1Pin);
+  pinMode(pinNumber, INPUT); //since we are using a digital pin, we must set tell it that it will be an INPUT
+  Serial.begin(9600); //turn on the serial port so we can read from the console
+  delay(4000);
+}
+
+void loop() {
+  distance1 = pulseIn(pinNumber, HIGH);//read the value from the sensor
+  Serial.print("Distance to object in MM: ");//print the value to the console
+  Serial.println(distance1);
+
+  if (distance1 > 3000){
+    normalState();
+  }
+  
+  if (distance1 < 3000 && distance1 > 1000){
+    detectState();
+  }
+
+  if(distance1 < 1000) {
+    hyperState();
+  }
+
+}
+ 
+
+////////////////////////States//////////////
+
+void normalState(){
+    
+    servoRotaion = oscillate(0, 30, 0,0.1, millis());
+    s1.write(servoRotaion);
+    }
+
+void detectState(){
+    
+    servoRotaion = oscillate(0, 180, 0, 0.1, millis());
+    s1.write(servoRotaion);
+    }
+
+ void hyperState(){
+    servoRotaion = oscillate(0, 20, 0, 1.2, millis());
+    s1.write(servoRotaion);
+  }
