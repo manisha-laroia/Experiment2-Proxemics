@@ -1,6 +1,9 @@
 /*
  * Creation & Computation - Digital Futures, OCAD University
- * Kate Hartman / Nick Puckett (Reference- servoOscillate1.ino)
+ * Manisha Laroia / Rajat Kumar / Nadine Valcin
+ * 
+ * Reference
+ * Kate Hartman / Nick Puckett (servoOscillate1.ino)
  *
  * Nick Puckett animation tools library 
  * https://github.com/npuckett/arduinoAnimation/blob/master/animationTools/animationTools.h
